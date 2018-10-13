@@ -9,14 +9,32 @@ import { Component, OnInit } from '@angular/core';
 export class BookstoreListComponent implements OnInit {
 
   bookstores: any[] = [];
-
+  bookstoresName: any[] = [];
+  allBooks: any[] = [];
+  filter:any = {};
   constructor(
     private bookstoreService: BookstoreService
   ) { }
 
   ngOnInit() {
+
     this.bookstoreService.getBookstores()
-      .subscribe(bookstores => this.bookstores = bookstores);
+      .subscribe(bookstoresName => this.bookstoresName = bookstoresName);
+
+    this.bookstoreService.getBookstores()
+      .subscribe(bookstores => this.bookstores = this.allBooks =  bookstores);
   }
 
+  onChange(){
+    var books = this.allBooks;
+     if(this.filter.id){
+      books = books.filter(v => v.id == this.filter.id);
+     }
+      this.bookstores = books;
+  }
+
+  resetFilter(){
+    this.filter = {};
+    this.onChange();
+  }
 }

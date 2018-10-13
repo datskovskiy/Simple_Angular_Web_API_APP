@@ -3,6 +3,18 @@
 <p>
     <a [routerLink]="['/bookstore/new']" class="btn btn-primary">New Book</a>
 </p>
+
+<div class="well">
+    <div class="form-group">
+        <label for="bookname">Search Books</label>
+        <select id="bookname" class="form-control" [(ngModel)]="filter.id" (change)="onChange()">
+          <option value=""></option>
+          <option *ngFor="let bs of bookstoresName" value="{{bs.id}}">{{bs.name}}</option>
+        </select>
+      </div>
+      <button class="btn btn-default" (click)="resetFilter()">Reset</button>
+</div>
+
 <table class="table">
     <thead>
         <tr>
