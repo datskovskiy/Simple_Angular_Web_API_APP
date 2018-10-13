@@ -1,4 +1,6 @@
+import { BookstoreService } from './../../services/bookstore.service';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-bookstore-form',
@@ -7,9 +9,63 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookstoreFormComponent implements OnInit {
 
-  constructor() { }
+  bookstore = {
+    id: 0,
+  };
+  id: any;
+  name: any;
+  title: any;
+  authorName: any;
+  publisherName: any;
+
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private bookstoreService: BookstoreService) {
+
+    route.params.subscribe(p => {
+      let id = +p['id'];
+      this.bookstore.id = Number.isNaN(id) ? 0 : id;
+    }, err => {
+      if (err.status == 404)
+        this.router.navigate(['/bookstore']);
+    });
+  }
 
   ngOnInit() {
+    this.bookstoreService.getBookstore(this.bookstore.id)
+      .subscribe(b => {
+        this.bookstore = b;
+      });
+  }
+
+  submit() {
+    console.log(this.bookstore.id);
+    if (this.bookstore.id !== 0) {
+      this.bookstoreService.update(this.bookstore)
+        .subscribe(x => {
+          console.log(x),
+            this.router.navigate(['/bookstore'])
+        });
+    }
+    else {
+      this.bookstoreService.create(this.bookstore)
+        .subscribe(x => {
+          console.log(x),
+            this.router.navigate(['/bookstore'])
+        });
+    }
+  }
+
+  delete() {
+    if (confirm("Are you sure?")) {
+      this.bookstoreService.delete(this.bookstore.id)
+        .subscribe(x => {
+          console.log(x),
+            this.router.navigate(['/bookstore'])
+        });
+    }
   }
 
 }
