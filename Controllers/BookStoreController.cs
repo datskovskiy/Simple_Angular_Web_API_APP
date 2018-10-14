@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using bookstore.BookstoreDB;
@@ -22,9 +23,14 @@ namespace bookstore.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<BookstoreResource>> GetBookStore(BookstoreResource bookstoreResource)
+        public async Task<IEnumerable<BookstoreResource>> GetBookStore(BookstoreResource bookstoreResource, FilterResource filterResource)
         {
-            var bookstore = await context.Bookstores.ToListAsync();
+            var filter = mapper.Map<FilterResource, Filter>(filterResource);
+            var query = context.Bookstores.AsQueryable();
+            if(filter.Id.HasValue)
+                query = query.Where(b => b.Id == filter.Id.Value);
+
+            var bookstore = await query.ToListAsync();
             return mapper.Map<IEnumerable<Bookstore>, IEnumerable<BookstoreResource>>(bookstore);
         } 
 
@@ -51,7 +57,8 @@ namespace bookstore.Controllers
             await context.SaveChangesAsync();
             return Ok(bookstore);
         }
-   
+
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookstore(int id)
         {
@@ -61,6 +68,7 @@ namespace bookstore.Controllers
             var bookstoreResource = mapper.Map<Bookstore, BookstoreResource>(bookstore);
             return Ok(bookstoreResource);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBookstore(int id)

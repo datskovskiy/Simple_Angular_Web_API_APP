@@ -11,29 +11,27 @@ export class BookstoreListComponent implements OnInit {
   bookstores: any[] = [];
   bookstoresName: any[] = [];
   allBooks: any[] = [];
-  filter:any = {};
+  filter: any = {};
   constructor(
     private bookstoreService: BookstoreService
   ) { }
 
   ngOnInit() {
-
-    this.bookstoreService.getBookstores()
+    this.bookstoreService.getBookstores(this.filter)
       .subscribe(bookstoresName => this.bookstoresName = bookstoresName);
-
-    this.bookstoreService.getBookstores()
-      .subscribe(bookstores => this.bookstores = this.allBooks =  bookstores);
+    this.populateBooks();
   }
 
-  onChange(){
-    var books = this.allBooks;
-     if(this.filter.id){
-      books = books.filter(v => v.id == this.filter.id);
-     }
-      this.bookstores = books;
+  private populateBooks() {
+    this.bookstoreService.getBookstores(this.filter)
+      .subscribe(bookstores => this.bookstores = bookstores);
   }
 
-  resetFilter(){
+  onChange() {
+    this.populateBooks();
+  }
+
+  resetFilter() {
     this.filter = {};
     this.onChange();
   }

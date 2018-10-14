@@ -12,6 +12,8 @@ namespace bookstore.Mapping
 
             CreateMap<BookstoreResource, Bookstore>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
+
+            CreateMap<FilterResource, Filter>();
         }
     }
 }
