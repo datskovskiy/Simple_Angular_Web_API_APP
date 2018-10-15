@@ -35,4 +35,14 @@ export class BookstoreListComponent implements OnInit {
     this.filter = {};
     this.onChange();
   }
+
+  sortBy(columnName: any) {
+    if (this.filter.sortBy === columnName) {
+      this.filter.isSortAscending = !this.filter.isSortAscending;
+    } else {
+      this.filter.sortBy = columnName;
+      this.filter.isSortAscending = true;
+    }
+    this.onChange();
+  }
 }

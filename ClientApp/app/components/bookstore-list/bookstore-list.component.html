@@ -8,21 +8,21 @@
     <div class="form-group">
         <label for="bookname">Search Books</label>
         <select id="bookname" class="form-control" [(ngModel)]="filter.id" (change)="onChange()">
-          <option value=""></option>
-          <option *ngFor="let bs of bookstoresName" value="{{bs.id}}">{{bs.name}}</option>
+            <option value=""></option>
+            <option *ngFor="let bs of bookstoresName" value="{{bs.id}}">{{bs.name}}</option>
         </select>
-      </div>
-      <button class="btn btn-default" (click)="resetFilter()">Reset</button>
+    </div>
+    <button class="btn btn-default" (click)="resetFilter()">Reset</button>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Sr.</th>
-            <th>Name</th>
-            <th>Title</th>
-            <th>Author Name</th>
-            <th>Publisher Name</th>
+            <th>Bookstore ID</th>
+            <th (click)="sortBy('name')">Name</th>
+            <th (click)="sortBy('title')">Title</th>
+            <th (click)="sortBy('authorName')">Author Name</th>
+            <th (click)="sortBy('publisherName')">Publisher Name</th>
             <th></th>
         </tr>
     </thead>

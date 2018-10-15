@@ -34,10 +34,12 @@ export class BookstoreFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.bookstoreService.getBookstore(this.bookstore.id)
-      .subscribe(b => {
-        this.bookstore = b;
-      });
+    if (this.bookstore.id > 0) {
+      this.bookstoreService.getBookstore(this.bookstore.id)
+        .subscribe(b => {
+          this.bookstore = b;
+        });
+    }
   }
 
   submit() {
