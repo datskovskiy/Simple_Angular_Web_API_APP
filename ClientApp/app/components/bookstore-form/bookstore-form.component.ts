@@ -34,7 +34,7 @@ export class BookstoreFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.bookstore.id > 0) {
+    if (this.bookstore.id > 0) { 
       this.bookstoreService.getBookstore(this.bookstore.id)
         .subscribe(b => {
           this.bookstore = b;
@@ -43,7 +43,6 @@ export class BookstoreFormComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.bookstore.id);
     if (this.bookstore.id !== 0) {
       this.bookstoreService.update(this.bookstore)
         .subscribe(x => {
